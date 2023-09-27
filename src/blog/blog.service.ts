@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateBlogDto } from './dto/createblog.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class BlogService {
-  getAllPosts(): string {
-    return 'This action returns all posts';
+  constructor(
+    @Inject('SERVICE_A') private readonly clientServiceA: ClientProxy,
+  ) {}
+
+  async getAllBlogs(): Promise<any> {
+    return this.clientServiceA.send({ cmd: 'getAllBlogs' }, {});
   }
   getPostById(id: number): string {
     return `This action returns post #${id}`;

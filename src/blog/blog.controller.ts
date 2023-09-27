@@ -17,9 +17,9 @@ import { CreateBlogDto } from './dto/createblog.dto';
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
-  @Get()
-  async getAllPosts(): Promise<string> {
-    return await this.blogService.getAllPosts();
+  @Get('getAll')
+  async getAllBlogs(): Promise<any> {
+    return await this.blogService.getAllBlogs();
   }
 
   @Get(':id')
