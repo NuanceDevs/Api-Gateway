@@ -11,7 +11,7 @@ import { Transport } from '@nestjs/microservices';
         name: 'SERVICE_A',
         transport: Transport.TCP,
         options: {
-          host: '127.0.0.1',
+          host: 'blog-microservice',
           port: 8888,
         },
       },
