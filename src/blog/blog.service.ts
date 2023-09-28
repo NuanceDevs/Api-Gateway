@@ -16,6 +16,7 @@ export class BlogService {
   }
 
   createPost(blogDto: CreateBlogDto): string {
+    this.clientServiceA.send({ cmd: 'createPost' }, blogDto);
     return `This action adds a new post {${blogDto}}`;
   }
 
