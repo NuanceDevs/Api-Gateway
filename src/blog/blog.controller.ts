@@ -21,7 +21,8 @@ export class BlogController {
   }
 
   @Get(':id')
-  async getPostById(@Param('id', ParseIntPipe) id: number): Promise<string> {
+  async getPostById(@Param('id', ParseIntPipe) id: number): Promise<unknown> {
+    console.log(typeof id);
     const blog = await this.blogService.getPostById(id);
     if (!blog) {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
@@ -30,7 +31,10 @@ export class BlogController {
   }
 
   @Post('create')
-  async createPost(@Body() data: CreateBlogDto): Promise<string> {
+  async createPost(@Body() data: CreateBlogDto): Promise<unknown> {
+    if (!data) {
+      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+    }
     return await this.blogService.createPost(data);
   }
 }

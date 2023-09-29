@@ -8,14 +8,15 @@ export class BlogService {
     @Inject('SERVICE_A') private readonly clientServiceA: ClientProxy,
   ) {}
 
-  async getAllBlogs(): Promise<any> {
+  async getAllBlogs(): Promise<unknown> {
     return this.clientServiceA.send({ cmd: 'getAllBlogs' }, {});
   }
-  getPostById(id: number): string {
-    return `This action returns post #${id}`;
+
+  async getPostById(id: number): Promise<unknown> {
+    return this.clientServiceA.send({ cmd: 'getPostById' }, id);
   }
 
-  async createPost(blogDto: CreateBlogDto): Promise<any> {
+  async createPost(blogDto: CreateBlogDto): Promise<unknown> {
     return this.clientServiceA.send({ cmd: 'createPost' }, blogDto);
   }
 
