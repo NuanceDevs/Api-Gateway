@@ -15,9 +15,8 @@ export class BlogService {
     return `This action returns post #${id}`;
   }
 
-  createPost(blogDto: CreateBlogDto): string {
-    this.clientServiceA.send({ cmd: 'createPost' }, blogDto);
-    return `This action adds a new post {${blogDto}}`;
+  async createPost(blogDto: CreateBlogDto): Promise<any> {
+    return this.clientServiceA.send({ cmd: 'createPost' }, blogDto);
   }
 
   updatePost(id: number): string {

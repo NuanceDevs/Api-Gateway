@@ -8,8 +8,6 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreateBlogDto } from './dto/createblog.dto';
 
@@ -31,9 +29,8 @@ export class BlogController {
     return blog;
   }
 
-  @Post('/create')
-  @UsePipes(new ValidationPipe())
+  @Post('create')
   async createPost(@Body() data: CreateBlogDto): Promise<string> {
-    return this.blogService.createPost(data);
+    return await this.blogService.createPost(data);
   }
 }
