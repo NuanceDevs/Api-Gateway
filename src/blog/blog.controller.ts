@@ -8,10 +8,13 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateBlogDto } from './dto/createblog.dto';
+import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 
 @Controller('blog')
+@UseGuards(ThrottlerGuard)
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
