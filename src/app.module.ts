@@ -10,7 +10,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ThrottlerModule.forRoot([
       {
         ttl: 1000, //Time to live in milliseconds
-        limit: 1, //Number of requests per ttl timeframe
+        limit: 100, //Number of requests per ttl timeframe
       },
     ]),
   ],
