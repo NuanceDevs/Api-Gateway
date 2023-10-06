@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   // UseGuards,
 } from '@nestjs/common';
 import { CreateBlogDto } from './dto/createblog.dto';
@@ -39,5 +40,16 @@ export class BlogController {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
     }
     return await this.blogService.createPost(data);
+  }
+
+  @Put('update/:id')
+  async updatePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: CreateBlogDto,
+  ): Promise<unknown> {
+    if (!data) {
+      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+    }
+    return await this.blogService.updatePost(id, data);
   }
 }
