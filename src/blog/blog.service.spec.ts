@@ -17,7 +17,7 @@ describe('BlogService', () => {
       providers: [
         BlogService,
         {
-          provide: 'SERVICE_A', // This should match the name used in the real module
+          provide: 'blogMicroservice', // This should match the name used in the real module
           useValue: mockMicroserviceClient, // Provide the mock client here
         },
       ],
