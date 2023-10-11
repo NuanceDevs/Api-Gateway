@@ -11,6 +11,7 @@ import {
   Put,
   // UseGuards,
 } from '@nestjs/common';
+import { UpdateBlogDto } from './dto/updateblog.dto';
 import { CreateBlogDto } from './dto/createblog.dto';
 // import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 
@@ -45,7 +46,7 @@ export class BlogController {
   @Put('update/:id')
   async updatePost(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: CreateBlogDto,
+    @Body() data: UpdateBlogDto,
   ): Promise<unknown> {
     if (!data) {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
