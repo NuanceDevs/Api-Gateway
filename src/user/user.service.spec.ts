@@ -40,18 +40,18 @@ describe('UserService', () => {
     it('should return a user', async () => {
       const result = ['test'];
 
-      jest.spyOn(service, 'getUserByID').mockResolvedValue(result);
+      jest.spyOn(service, 'getUserById').mockResolvedValue(result);
 
-      expect(await service.getUserByID(1)).toBe(result);
+      expect(await service.getUserById(1)).toBe(result);
     });
 
     it('should return a user with the specified id', async () => {
       const userID = 1;
       const expectedResult = { id: userID, name: 'Test user' };
 
-      jest.spyOn(service, 'getUserByID').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'getUserById').mockResolvedValue(expectedResult);
 
-      const result = await service.getUserByID(userID);
+      const result = await service.getUserById(userID);
 
       expect(result).toEqual(expectedResult);
     });
@@ -59,7 +59,7 @@ describe('UserService', () => {
     it('should return an http exception for a non-existent id', async () => {
       const userID = 1;
       try {
-        await service.getUserByID(userID);
+        await service.getUserById(userID);
       } catch (result) {
         expect(result).toBeInstanceOf(HttpException);
       }
