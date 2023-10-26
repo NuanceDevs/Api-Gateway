@@ -12,7 +12,7 @@ export class UserService {
     return this.clientServiceA.send({ cmd: 'getAllUsers' }, {});
   }
 
-  async getUserById(id: number): Promise<unknown> {
+  async getUserById(id: any): Promise<unknown> {
     return this.clientServiceA.send({ cmd: 'getUserById' }, id);
   }
 

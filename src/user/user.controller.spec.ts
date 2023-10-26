@@ -30,7 +30,6 @@ describe('BlogController', () => {
 
   it('should return exception when id is not existent', async () => {
     const id = 1;
-
     jest.spyOn(UserService, 'getUserById');
 
     try {
