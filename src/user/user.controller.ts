@@ -26,11 +26,11 @@ export class UserController {
   @Get(':id')
   async getUserById(@Param('id', ParseIntPipe) id: number): Promise<unknown> {
     console.log(typeof id);
-    const blog = await this.userService.getUserById(id);
-    if (!blog) {
+    const user = await this.userService.getUserById(id);
+    if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
-    return blog;
+    return user;
   }
 
   @Post('create')

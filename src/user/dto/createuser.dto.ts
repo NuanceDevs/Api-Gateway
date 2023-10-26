@@ -10,5 +10,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
   @IsNotEmpty()
-  role: Enumerator;
+  role: string;
 }
