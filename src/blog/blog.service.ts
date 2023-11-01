@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/CreatePost.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { DeletePostDto } from './dto/DeletePost.dto';
+import { UpdatePostDto } from './dto/UpdatePost.dto';
 
 @Injectable()
 export class BlogService {
@@ -17,15 +18,15 @@ export class BlogService {
     return this.blogMicroservice.send({ cmd: 'getPostById' }, id);
   }
 
-  async createPost(blogDto: CreateBlogDto): Promise<unknown> {
+  async createPost(blogDto: CreatePostDto): Promise<unknown> {
     return this.blogMicroservice.send({ cmd: 'createPost' }, blogDto);
   }
 
-  updatePost(id: number): string {
-    return `This action updates post #${id}`;
+  async updatePost(blogDto: UpdatePostDto): Promise<unknown> {
+    return `This action updates post #${blogDto.id}`;
   }
 
   async deletePost(postDto: DeletePostDto) {
-    return this.clientServiceA.send({ cmd: 'deletePost' }, postDto);
+    return this.blogMicroservice.send({ cmd: 'deletePost' }, postDto);
   }
 }
