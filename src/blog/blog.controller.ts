@@ -2,6 +2,7 @@ import { BlogService } from './blog.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -11,7 +12,6 @@ import {
   Put,
   // UseGuards,
 } from '@nestjs/common';
-import { UpdateBlogDto } from './dto/updateblog.dto';
 import { CreateBlogDto } from './dto/createblog.dto';
 // import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 
@@ -30,13 +30,21 @@ export class BlogController {
     console.log(typeof id);
     const blog = await this.blogService.getPostById(id);
     if (!blog) {
-      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
     }
     return blog;
   }
 
+  @Delete('delete')
+  async deletePost(@Body() data: DeletePostDto): Promise<unknown> {
+    if (!data) {
+      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+    }
+    return await this.blogService.deletePost(data);
+  }
+
   @Post('create')
-  async createPost(@Body() data: CreateBlogDto): Promise<unknown> {
+  async createPost(@Body() data: CreatePostDto): Promise<unknown> {
     if (!data) {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
     }
