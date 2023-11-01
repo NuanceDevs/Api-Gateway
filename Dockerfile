@@ -1,30 +1,21 @@
-# Stage 1: Build the application
-FROM node:18-alpine AS build
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-# Stage 2: Create a smaller production image
+# Base image
 FROM node:18-alpine
 
+# Create app directory
 WORKDIR /usr/src/app
 
-# Copy only package.json to install dependencies
-COPY --from=build /usr/src/app/package*.json ./
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
-# Copy node_modules from the build stage
-COPY --from=build /usr/src/app/node_modules ./node_modules
+# Install app dependencies
+RUN npm install
 
-# Copy the production build
-COPY --from=build /usr/src/app/dist ./dist
+# Bundle app source
+COPY . .
 
+# Creates a "dist" folder with the production build
+RUN npm run build
 EXPOSE 3001
 
+# Start the server using the production build
 CMD [ "node", "dist/main.js" ]
