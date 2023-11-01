@@ -1,13 +1,14 @@
-name: Run Tests
+name: Run tests and static code analyses
 
 on:
   push:
-    branches: [develop, main]
+    branches:
+      - main
   pull_request:
-    branches: [develop, main]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  run-tests-and-static-code-analyzer-sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +25,9 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
