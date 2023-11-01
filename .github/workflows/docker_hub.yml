@@ -11,12 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success'}}
 
+
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       working-directory: ./
       run: docker build . --file Dockerfile --tag ricocelsius/nuance-api-gateway:latest
     - name: Publish
-      run: |
+      run: | 
         docker login -u ricocelsius -p ${{ secrets.DOCKER_HUB_TOKEN }}
         docker push ricocelsius/nuance-api-gateway:latest

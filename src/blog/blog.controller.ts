@@ -1,7 +1,10 @@
 import { BlogService } from './blog.service';
+import { CreatePostDto } from './dto/CreatePost.dto';
+import { DeletePostDto } from './dto/DeletePost.dto';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -11,8 +14,7 @@ import {
   Put,
   // UseGuards,
 } from '@nestjs/common';
-import { UpdateBlogDto } from './dto/updateblog.dto';
-import { CreateBlogDto } from './dto/createblog.dto';
+import { UpdatePostDto } from './dto/UpdatePost.dto';
 // import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 
 @Controller('blog')
@@ -30,13 +32,21 @@ export class BlogController {
     console.log(typeof id);
     const blog = await this.blogService.getPostById(id);
     if (!blog) {
-      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
     }
     return blog;
   }
 
+  @Delete('delete')
+  async deletePost(@Body() data: DeletePostDto): Promise<unknown> {
+    if (!data) {
+      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+    }
+    return await this.blogService.deletePost(data);
+  }
+
   @Post('create')
-  async createPost(@Body() data: CreateBlogDto): Promise<unknown> {
+  async createPost(@Body() data: CreatePostDto): Promise<unknown> {
     if (!data) {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
     }
@@ -46,11 +56,11 @@ export class BlogController {
   @Put('update/:id')
   async updatePost(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdateBlogDto,
+    @Body() data: UpdatePostDto,
   ): Promise<unknown> {
     if (!data) {
       throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
     }
-    return await this.blogService.updatePost(id, data);
+    return await this.blogService.updatePost(data);
   }
 }
