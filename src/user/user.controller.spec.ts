@@ -18,7 +18,7 @@ describe('BlogController', () => {
       providers: [
         UserService,
         {
-          provide: 'SERVICE_A',
+          provide: 'SERVICE_B',
           useValue: mockMicroserviceClient,
         },
       ],

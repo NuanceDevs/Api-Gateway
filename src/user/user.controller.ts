@@ -18,8 +18,9 @@ import { CreateUserDto } from './dto/createuser.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('getAll')
+  @Get('getAllUsers')
   async getAllUsers(): Promise<any> {
+    console.log('getAllUsers received');
     return await this.userService.getAllUsers();
   }
 

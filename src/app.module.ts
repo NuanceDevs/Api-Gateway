@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BlogModule } from './blog/blog.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    UserModule,
     BlogModule,
     ThrottlerModule.forRoot([
       {

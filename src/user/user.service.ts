@@ -5,19 +5,19 @@ import { ClientProxy } from '@nestjs/microservices';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('SERVICE_A') private readonly clientServiceA: ClientProxy,
+    @Inject('SERVICE_B') private readonly clientServiceB: ClientProxy,
   ) {}
 
   async getAllUsers(): Promise<unknown> {
-    return this.clientServiceA.send({ cmd: 'getAllUsers' }, {});
+    return this.clientServiceB.send({ cmd: 'getAllUsers' }, {});
   }
 
   async getUserById(id: any): Promise<unknown> {
-    return this.clientServiceA.send({ cmd: 'getUserById' }, id);
+    return this.clientServiceB.send({ cmd: 'getUserById' }, id);
   }
 
   async createUser(userDTO: CreateUserDto): Promise<unknown> {
-    return this.clientServiceA.send({ cmd: 'createUser' }, userDTO);
+    return this.clientServiceB.send({ cmd: 'createUser' }, userDTO);
   }
 
   updateUser(id: number): string {

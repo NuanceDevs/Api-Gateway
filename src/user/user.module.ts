@@ -8,10 +8,10 @@ import { Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'SERVICE_A',
+        name: 'SERVICE_B',
         transport: Transport.TCP,
         options: {
-          host: process.env.MS_BLOG_HOST || 'localhost',
+          host: process.env.MS_USER_HOST || 'localhost',
           port: 8888,
         },
       },
