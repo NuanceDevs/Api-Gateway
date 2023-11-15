@@ -1,11 +1,12 @@
 name: Run tests and static code analyses
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+      - develop
 
 jobs:
   run-tests-and-static-code-analyzer-sonarcloud:
