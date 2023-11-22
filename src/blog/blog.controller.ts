@@ -47,7 +47,6 @@ export class BlogController {
       return blog;
     } catch (e) {
       this.logger.error(e);
-      // handle other errors
     }
   }
 

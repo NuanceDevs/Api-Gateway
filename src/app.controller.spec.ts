@@ -3,17 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WinstonModule } from 'nest-winston';
 
-// Mock the entire winston module
 jest.mock('winston', () => {
   const originalModule = jest.requireActual('winston');
   return {
     ...originalModule,
     createLogger: jest.fn().mockReturnValue({
-      debug: jest.fn(), // Mock debug method
-      info: jest.fn(), // Mock info method
-      warn: jest.fn(), // Mock warn method
-      error: jest.fn(), // Mock error method
-      // Add other methods as needed
+      debug: jest.fn(),
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
     }),
   };
 });
@@ -25,7 +23,7 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
-      imports: [WinstonModule.forRoot({})], // Use an empty config for WinstonModule
+      imports: [WinstonModule.forRoot({})],
     }).compile();
 
     appController = app.get<AppController>(AppController);

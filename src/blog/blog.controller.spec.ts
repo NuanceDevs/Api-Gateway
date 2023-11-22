@@ -58,7 +58,7 @@ describe('BlogController', () => {
   it('should return exception when id is not existent', async () => {
     const id = 1;
 
-    jest.spyOn(blogService, 'getPostById').mockResolvedValue(null); // Mock the service to return null for the non-existent ID
+    jest.spyOn(blogService, 'getPostById').mockResolvedValue(null);
 
     const result = await controller.getPostById(id);
     expect(result).toBeInstanceOf(HttpException);
