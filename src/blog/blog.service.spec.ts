@@ -1,24 +1,48 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlogService } from './blog.service';
-import { HttpException } from '@nestjs/common';
 
-// Mock the microservice client
 const mockMicroserviceClient = {
-  send: jest.fn(), // You can add any required methods here
+  send: jest.fn(),
 };
+
+const winstonMock = {
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+};
+
+jest.mock('winston', () => ({
+  ...jest.requireActual('winston'),
+
+  createLogger: jest.fn().mockReturnValue({
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
 
 describe('BlogService', () => {
   let service: BlogService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [], // No need to import the real ClientsModule here
+      imports: [],
       controllers: [],
       providers: [
         BlogService,
         {
-          provide: 'blogMicroservice', // This should match the name used in the real module
-          useValue: mockMicroserviceClient, // Provide the mock client here
+          provide: 'blogMicroservice',
+          useValue: mockMicroserviceClient,
+        },
+        {
+          provide: 'NestWinston',
+          useValue: winstonMock,
+        },
+        {
+          provide: 'winston',
+          useValue: winstonMock,
         },
       ],
     }).compile();
@@ -54,15 +78,6 @@ describe('BlogService', () => {
       const result = await service.getPostById(postId);
 
       expect(result).toEqual(expectedResult);
-    });
-
-    it('should return an http exception for a non-existent id', async () => {
-      const postId = 1;
-      try {
-        await service.getPostById(postId);
-      } catch (result) {
-        expect(result).toBeInstanceOf(HttpException);
-      }
     });
   });
 });

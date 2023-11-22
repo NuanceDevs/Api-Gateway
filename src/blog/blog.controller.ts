@@ -11,46 +11,70 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Inject,
   Put,
-  // UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { UpdatePostDto } from './dto/UpdatePost.dto';
-// import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @Controller('blog')
-// @UseGuards(ThrottlerGuard)
 export class BlogController {
-  constructor(private readonly blogService: BlogService) {}
+  constructor(
+    private readonly blogService: BlogService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   @Get('getAll')
   async getAllBlogs(): Promise<any> {
-    return await this.blogService.getAllBlogs();
+    try {
+      this.logger.debug('getAllBlogs endpoint called');
+      return await this.blogService.getAllBlogs();
+    } catch (e) {
+      this.logger.error(e);
+    }
   }
 
   @Get(':id')
   async getPostById(@Param('id', ParseIntPipe) id: number): Promise<unknown> {
-    console.log(typeof id);
-    const blog = await this.blogService.getPostById(id);
-    if (!blog) {
-      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+    this.logger.debug('getPostById endpoint called');
+    try {
+      const blog = await this.blogService.getPostById(id);
+      if (!blog) {
+        this.logger.debug('Blog not found');
+        return new HttpException('Post not found', HttpStatus.NOT_FOUND);
+      }
+      return blog;
+    } catch (e) {
+      this.logger.error(e);
     }
-    return blog;
   }
 
   @Delete('delete')
   async deletePost(@Body() data: DeletePostDto): Promise<unknown> {
-    if (!data) {
-      throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+    try {
+      this.logger.debug('deletePost endpoint called');
+      if (!data) {
+        this.logger.debug('Blog not found');
+        throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+      }
+      return await this.blogService.deletePost(data);
+    } catch (e) {
+      this.logger.error(e);
     }
-    return await this.blogService.deletePost(data);
   }
 
   @Post('create')
   async createPost(@Body() data: CreatePostDto): Promise<unknown> {
-    if (!data) {
-      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+    this.logger.debug('createPost endpoint called');
+    try {
+      if (!data) {
+        throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+      }
+      return await this.blogService.createPost(data);
+    } catch (e) {
+      this.logger.error(e);
     }
-    return await this.blogService.createPost(data);
   }
 
   @Put('update/:id')
@@ -58,9 +82,14 @@ export class BlogController {
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdatePostDto,
   ): Promise<unknown> {
-    if (!data) {
-      throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+    this.logger.debug('updatePost endpoint called');
+    try {
+      if (!data) {
+        throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+      }
+      return await this.blogService.updatePost(data);
+    } catch (e) {
+      this.logger.error(e);
     }
-    return await this.blogService.updatePost(data);
   }
 }
