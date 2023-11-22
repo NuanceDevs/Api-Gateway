@@ -5,6 +5,24 @@ const mockMicroserviceClient = {
   send: jest.fn(),
 };
 
+const winstonMock = {
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+};
+
+jest.mock('winston', () => ({
+  ...jest.requireActual('winston'),
+
+  createLogger: jest.fn().mockReturnValue({
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
+
 describe('BlogService', () => {
   let service: BlogService;
 
@@ -17,6 +35,14 @@ describe('BlogService', () => {
         {
           provide: 'blogMicroservice',
           useValue: mockMicroserviceClient,
+        },
+        {
+          provide: 'NestWinston',
+          useValue: winstonMock,
+        },
+        {
+          provide: 'winston',
+          useValue: winstonMock,
         },
       ],
     }).compile();
