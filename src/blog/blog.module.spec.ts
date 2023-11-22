@@ -6,13 +6,18 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 // Corrected mock for ClientsModule
-jest.mock('@nestjs/microservices', () => ({
+jest.mock('@nestjs/microservices/module', () => ({
   ClientsModule: {
-    register: jest.fn().mockImplementation(() => ({
-      // Mock implementation or empty object
-    })),
+    register: jest.fn().mockImplementation(() => [
+      {
+        name: 'BlogService',
+        options: {
+          host: 'localhost',
+          port: 3001,
+        },
+      },
+    ]),
   },
-  Transport,
 }));
 
 // Mock for winston
@@ -27,23 +32,6 @@ jest.mock('winston', () => ({
   ...jest.requireActual('winston'),
   createLogger: () => winstonMock,
 }));
-
-describe('BlogModule', () => {
-  let module: TestingModule;
-
-  beforeEach(async () => {
-    module = await Test.createTestingModule({
-      imports: [BlogModule, ClientsModule.register([])],
-      providers: [
-        {
-          provide: WINSTON_MODULE_PROVIDER,
-          useValue: winstonMock,
-        },
-        // Include any other dependencies needed by BlogModule here
-      ],
-    }).compile();
-  });
-});
 
 describe('BlogModule', () => {
   let module: TestingModule;
