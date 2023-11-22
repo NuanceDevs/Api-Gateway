@@ -3,6 +3,26 @@ import { BlogController } from './blog.controller';
 import { HttpException } from '@nestjs/common';
 import { BlogService } from './blog.service';
 
+// Define winstonMock before jest.mock
+
+const winstonMock = {
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+};
+
+jest.mock('winston', () => ({
+  ...jest.requireActual('winston'),
+
+  createLogger: jest.fn().mockReturnValue({
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  }),
+}));
+
 const mockMicroserviceClient = {
   send: jest.fn(),
 };
@@ -20,6 +40,14 @@ describe('BlogController', () => {
           provide: 'blogMicroservice',
           useValue: mockMicroserviceClient,
         },
+        {
+          provide: 'NestWinston',
+          useValue: winstonMock,
+        },
+        {
+          provide: 'winston',
+          useValue: winstonMock,
+        },
       ],
     }).compile();
 
@@ -30,12 +58,9 @@ describe('BlogController', () => {
   it('should return exception when id is not existent', async () => {
     const id = 1;
 
-    jest.spyOn(blogService, 'getPostById');
+    jest.spyOn(blogService, 'getPostById').mockResolvedValue(null);
 
-    try {
-      await controller.getPostById(id);
-    } catch (error) {
-      expect(error).toBeInstanceOf(HttpException);
-    }
+    const result = await controller.getPostById(id);
+    expect(result).toBeInstanceOf(HttpException);
   });
 });

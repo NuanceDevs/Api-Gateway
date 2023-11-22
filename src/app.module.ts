@@ -3,9 +3,37 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BlogModule } from './blog/blog.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { WinstonModule, utilities } from 'nest-winston';
+import * as winston from 'winston';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    WinstonModule.forRoot({
+      level: 'info',
+      format: winston.format.json(),
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.ms(),
+            utilities.format.nestLike('Api Gateway', {
+              colors: true,
+              prettyPrint: true,
+            }),
+          ),
+        }),
+        new winston.transports.File({
+          filename: 'error-warnings.log',
+          level: 'warn',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.json(),
+          ),
+        }),
+      ],
+    }),
     BlogModule,
     ThrottlerModule.forRoot([
       {
@@ -14,7 +42,14 @@ import { ThrottlerModule } from '@nestjs/throttler';
       },
     ]),
   ],
+
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
