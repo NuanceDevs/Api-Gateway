@@ -50,25 +50,21 @@ describe('BlogModule', () => {
           provide: WINSTON_MODULE_PROVIDER,
           useValue: winstonMock,
         },
-        // Include any other dependencies needed by BlogModule here
       ],
     }).compile();
   });
 
   it('should import ClientsModule', () => {
-    // Test to verify if ClientsModule is imported correctly
     const clientsModule = module.get<ClientsModule>(ClientsModule);
     expect(clientsModule).toBeDefined();
   });
 
   it('should provide BlogService', () => {
-    // Test to verify if BlogService is provided
     const blogService = module.get<BlogService>(BlogService);
     expect(blogService).toBeDefined();
   });
 
   it('should declare BlogController', () => {
-    // Test to verify if BlogController is declared
     const blogController = module.get<BlogController>(BlogController);
     expect(blogController).toBeDefined();
   });
