@@ -3,6 +3,7 @@ import { BlogController } from './blog.controller';
 import { HttpException } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { Observable } from 'rxjs';
+import { UpdatePostDto } from './dto/UpdatePost.dto';
 
 const winstonMock = {
   debug: jest.fn(),
@@ -153,6 +154,8 @@ describe('BlogController', () => {
         const result = await controller.updatePost(1, updatePostDto);
         expect(result).toEqual({ id: 1, ...updatePostDto });
       });
+
+      // Should update a post with valid data
 
       it('should handle errors', async () => {
         jest.spyOn(blogService, 'updatePost').mockImplementation(() => {
