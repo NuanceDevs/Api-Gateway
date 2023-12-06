@@ -8,6 +8,9 @@ import { Logger } from 'winston';
 
 @Injectable()
 export class BlogService {
+  getClientConfig() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @Inject('blogMicroservice') private readonly blogMicroservice: ClientProxy,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
