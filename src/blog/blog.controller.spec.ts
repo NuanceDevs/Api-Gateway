@@ -120,7 +120,11 @@ describe('BlogController', () => {
 
     describe('createPost', () => {
       it('should create a post', async () => {
-        const createPostDto = { title: 'New Blog', content: 'New Content' };
+        const createPostDto = {
+          title: 'New Blog',
+          content: 'New Content',
+          imageUrl: 'New Image',
+        };
         jest
           .spyOn(blogService, 'createPost')
           .mockResolvedValue({ id: 1, ...createPostDto });
@@ -135,7 +139,11 @@ describe('BlogController', () => {
         });
 
         await expect(
-          controller.createPost({ title: 'New Blog', content: 'New Content' }),
+          controller.createPost({
+            title: 'New Blog',
+            content: 'New Content',
+            imageUrl: 'New Image',
+          }),
         ).rejects.toThrow(Error);
       });
     });
