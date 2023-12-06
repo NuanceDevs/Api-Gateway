@@ -32,6 +32,7 @@ export class BlogController {
       return await this.blogService.getAllBlogs();
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 
@@ -47,6 +48,7 @@ export class BlogController {
       return blog;
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 
@@ -56,11 +58,12 @@ export class BlogController {
       this.logger.debug('deletePost endpoint called');
       if (!data) {
         this.logger.debug('Blog not found');
-        throw new HttpException('Post not found', HttpStatus.BAD_REQUEST);
+        return new HttpException('Post not found', HttpStatus.BAD_REQUEST);
       }
       return await this.blogService.deletePost(data);
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 
@@ -69,11 +72,12 @@ export class BlogController {
     this.logger.debug('createPost endpoint called');
     try {
       if (!data) {
-        throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+        return new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
       }
       return await this.blogService.createPost(data);
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 
@@ -85,11 +89,12 @@ export class BlogController {
     this.logger.debug('updatePost endpoint called');
     try {
       if (!data) {
-        throw new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
+        return new HttpException('Blog not found', HttpStatus.BAD_REQUEST);
       }
       return await this.blogService.updatePost(data);
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 }
